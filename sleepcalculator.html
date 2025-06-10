@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sleep Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ede7f6, #e1f5fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 420px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    select, input[type="time"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input:focus, select:focus {
+      border-color: #42a5f5;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #42a5f5;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #1e88e5;
+    }
+
+    .result {
+      margin-top: 16px;
+      font-size: 1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+
+    ul {
+      text-align: left;
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+
+    ul li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Sleep Calculator</h2>
+    <select id="mode">
+      <option value="">Choose Option</option>
+      <option value="wake">I want to wake up at...</option>
+      <option value="sleep">I want to sleep at...</option>
+    </select>
+    <input type="time" id="timeInput" />
+    <button onclick="calculateSleep()">Calculate</button>
+    <div class="result" id="sleepResult"></div>
+  </div>
+
+  <script>
+    function calculateSleep() {
+      const mode = document.getElementById('mode').value;
+      const timeStr = document.getElementById('timeInput').value;
+      const result = document.getElementById('sleepResult');
+
+      result.innerHTML = '';
+      result.classList.remove('error');
+
+      if (!mode || !timeStr) {
+        result.classList.add('error');
+        result.textContent = 'Please select mode and enter a time.';
+        return;
+      }
+
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      let baseTime = new Date();
+      baseTime.setHours(hours);
+      baseTime.setMinutes(minutes);
+      baseTime.setSeconds(0);
+
+      const cycleMinutes = 90;
+      const results = [];
+
+      if (mode === 'wake') {
+        for (let i = 6; i >= 3; i--) {
+          const sleepTime = new Date(baseTime.getTime() - i * cycleMinutes * 60 * 1000 - 15 * 60 * 1000);
+          results.push(sleepTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        }
+        result.innerHTML = `<strong>Try to fall asleep at one of these times:</strong><ul>${results.map(t => `<li>${t}</li>`).join('')}</ul>`;
+      } else {
+        for (let i = 3; i <= 6; i++) {
+          const wakeTime = new Date(baseTime.getTime() + i * cycleMinutes * 60 * 1000 + 15 * 60 * 1000);
+          results.push(wakeTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        }
+        result.innerHTML = `<strong>Try to wake up at one of these times:</strong><ul>${results.map(t => `<li>${t}</li>`).join('')}</ul>`;
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BMR Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffe1e1, #e0f7fa);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .bmr-container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    .bmr-container h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .bmr-container input,
+    .bmr-container select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border 0.3s;
+    }
+
+    .bmr-container input:focus,
+    .bmr-container select:focus {
+      border-color: #4f46e5;
+      outline: none;
+    }
+
+    .bmr-container input.error,
+    .bmr-container select.error {
+      border-color: red;
+    }
+
+    .bmr-container button {
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .bmr-container button:hover {
+      background: #4338ca;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bmr-container">
+    <h2>BMR Calculator</h2>
+    <select id="gender">
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <input type="number" id="age" placeholder="Age (years)" />
+    <input type="number" id="height" placeholder="Height (cm)" />
+    <input type="number" id="weight" placeholder="Weight (kg)" />
+    <button onclick="calculateBMR()">Calculate BMR</button>
+    <div class="result" id="bmrResult"></div>
+  </div>
+
+  <script>
+    function calculateBMR() {
+      const genderEl = document.getElementById('gender');
+      const ageEl = document.getElementById('age');
+      const heightEl = document.getElementById('height');
+      const weightEl = document.getElementById('weight');
+      const resultEl = document.getElementById('bmrResult');
+
+      // Reset error states
+      [genderEl, ageEl, heightEl, weightEl].forEach(el => el.classList.remove('error'));
+      resultEl.classList.remove('error');
+      resultEl.textContent = '';
+
+      const gender = genderEl.value;
+      const age = parseFloat(ageEl.value);
+      const height = parseFloat(heightEl.value);
+      const weight = parseFloat(weightEl.value);
+
+      let hasError = false;
+
+      if (!gender) {
+        genderEl.classList.add('error');
+        hasError = true;
+      }
+      if (!age || age <= 0) {
+        ageEl.classList.add('error');
+        hasError = true;
+      }
+      if (!height || height <= 0) {
+        heightEl.classList.add('error');
+        hasError = true;
+      }
+      if (!weight || weight <= 0) {
+        weightEl.classList.add('error');
+        hasError = true;
+      }
+
+      if (hasError) {
+        resultEl.textContent = 'Please fill in all fields correctly.';
+        resultEl.classList.add('error');
+        return;
+      }
+
+      let bmr;
+
+      if (gender === 'male') {
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+      } else {
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+      }
+
+      resultEl.textContent = `Your BMR is ${bmr.toFixed(2)} kcal/day`;
+    }
+  </script>
+
+</body>
+</html>

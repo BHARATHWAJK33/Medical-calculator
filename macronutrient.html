@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Macronutrient Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fffde7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 420px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input:focus, select:focus {
+      border-color: #26a69a;
+      outline: none;
+    }
+
+    input.error, select.error {
+      border-color: red;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #26a69a;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #00796b;
+    }
+
+    .result {
+      margin-top: 16px;
+      font-size: 1em;
+      font-weight: 500;
+      color: #333;
+      text-align: left;
+    }
+
+    .result.error {
+      color: red;
+    }
+
+    ul {
+      text-align: left;
+      padding-left: 0;
+    }
+
+    ul li {
+      list-style: none;
+      margin: 6px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Macronutrient Calculator</h2>
+    <input type="number" id="calories" placeholder="Daily Calories (kcal)">
+    <select id="goal">
+      <option value="">Select Goal</option>
+      <option value="maintain">Maintain</option>
+      <option value="cut">Lose Fat</option>
+      <option value="bulk">Gain Muscle</option>
+    </select>
+    <button onclick="calculateMacros()">Calculate</button>
+    <div class="result" id="macroResult"></div>
+  </div>
+
+  <script>
+    function calculateMacros() {
+      const calories = parseFloat(document.getElementById('calories').value);
+      const goal = document.getElementById('goal').value;
+      const result = document.getElementById('macroResult');
+
+      // Reset
+      result.innerHTML = '';
+      result.classList.remove('error');
+      document.getElementById('calories').classList.remove('error');
+      document.getElementById('goal').classList.remove('error');
+
+      let hasError = false;
+      if (!calories || calories <= 0) {
+        document.getElementById('calories').classList.add('error');
+        hasError = true;
+      }
+      if (!goal) {
+        document.getElementById('goal').classList.add('error');
+        hasError = true;
+      }
+
+      if (hasError) {
+        result.textContent = 'Please enter valid calories and goal.';
+        result.classList.add('error');
+        return;
+      }
+
+      // Macronutrient ratios by goal
+      const ratios = {
+        maintain: { protein: 0.3, carbs: 0.4, fat: 0.3 },
+        cut:      { protein: 0.4, carbs: 0.3, fat: 0.3 },
+        bulk:     { protein: 0.25, carbs: 0.5, fat: 0.25 }
+      };
+
+      const macro = ratios[goal];
+      const proteinGrams = (calories * macro.protein) / 4;
+      const carbGrams = (calories * macro.carbs) / 4;
+      const fatGrams = (calories * macro.fat) / 9;
+
+      result.innerHTML = `
+        <div><strong>Macronutrient Targets:</strong></div>
+        <ul>
+          <li>Protein: ${proteinGrams.toFixed(1)} g</li>
+          <li>Carbohydrates: ${carbGrams.toFixed(1)} g</li>
+          <li>Fats: ${fatGrams.toFixed(1)} g</li>
+        </ul>
+      `;
+    }
+  </script>
+
+</body>
+</html>

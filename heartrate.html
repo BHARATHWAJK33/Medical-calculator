@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Heart Rate Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8bbd0, #bbdefb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #ec407a;
+      outline: none;
+    }
+
+    input.error {
+      border-color: red;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #ec407a;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #d81b60;
+    }
+
+    .result {
+      margin-top: 16px;
+      font-size: 1.1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+
+    .zone {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      color: #fff;
+    }
+
+    .fat-burn { background: #81c784; }
+    .cardio { background: #64b5f6; }
+    .peak { background: #e57373; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Heart Rate Calculator</h2>
+    <input type="number" id="age" placeholder="Your Age (years)">
+    <input type="number" id="resting" placeholder="Resting Heart Rate (bpm)">
+    <button onclick="calculateHeartRate()">Calculate</button>
+    <div class="result" id="heartRateResult"></div>
+  </div>
+
+  <script>
+    function calculateHeartRate() {
+      const age = parseFloat(document.getElementById('age').value);
+      const resting = parseFloat(document.getElementById('resting').value);
+      const result = document.getElementById('heartRateResult');
+
+      // Reset
+      result.innerHTML = '';
+      result.classList.remove('error');
+      document.getElementById('age').classList.remove('error');
+      document.getElementById('resting').classList.remove('error');
+
+      let hasError = false;
+
+      if (!age || age <= 0) {
+        document.getElementById('age').classList.add('error');
+        hasError = true;
+      }
+      if (!resting || resting <= 0) {
+        document.getElementById('resting').classList.add('error');
+        hasError = true;
+      }
+
+      if (hasError) {
+        result.textContent = 'Please enter valid inputs.';
+        result.classList.add('error');
+        return;
+      }
+
+      const maxHR = 220 - age;
+      const reserve = maxHR - resting;
+
+      const fatBurnMin = Math.round(reserve * 0.5 + resting);
+      const fatBurnMax = Math.round(reserve * 0.7 + resting);
+
+      const cardioMin = Math.round(reserve * 0.7 + resting);
+      const cardioMax = Math.round(reserve * 0.85 + resting);
+
+      const peakMin = Math.round(reserve * 0.85 + resting);
+      const peakMax = maxHR;
+
+      result.innerHTML = `
+        <div>Max Heart Rate: <strong>${maxHR} bpm</strong></div>
+        <div class="zone fat-burn">Fat Burn Zone: ${fatBurnMin} - ${fatBurnMax} bpm</div>
+        <div class="zone cardio">Cardio Zone: ${cardioMin} - ${cardioMax} bpm</div>
+        <div class="zone peak">Peak Zone: ${peakMin} - ${peakMax} bpm</div>
+      `;
+    }
+  </script>
+
+</body>
+</html>

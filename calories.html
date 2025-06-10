@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calorie Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fff3e0, #e3f2fd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 380px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input:focus, select:focus {
+      border-color: #42a5f5;
+      outline: none;
+    }
+
+    input.error, select.error {
+      border-color: red;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #42a5f5;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #1e88e5;
+    }
+
+    .result {
+      margin-top: 16px;
+      font-size: 1.1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Calories Calculator</h2>
+    <input type="number" id="age" placeholder="Age (years)">
+    <input type="number" id="weight" placeholder="Weight (kg)">
+    <input type="number" id="height" placeholder="Height (cm)">
+    
+    <select id="gender">
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <select id="activity">
+      <option value="">Select Activity Level</option>
+      <option value="1.2">Sedentary (little/no exercise)</option>
+      <option value="1.375">Light (1–3 days/week)</option>
+      <option value="1.55">Moderate (3–5 days/week)</option>
+      <option value="1.725">Active (6–7 days/week)</option>
+      <option value="1.9">Very active (twice/day)</option>
+    </select>
+
+    <button onclick="calculateCalories()">Calculate</button>
+    <div class="result" id="caloriesResult"></div>
+  </div>
+
+  <script>
+    function calculateCalories() {
+      const age = parseFloat(document.getElementById('age').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+      const gender = document.getElementById('gender').value;
+      const activity = parseFloat(document.getElementById('activity').value);
+      const result = document.getElementById('caloriesResult');
+
+      // Reset styles
+      result.textContent = '';
+      result.classList.remove('error');
+      document.querySelectorAll('input, select').forEach(el => el.classList.remove('error'));
+
+      let hasError = false;
+      if (!age || age <= 0) {
+        document.getElementById('age').classList.add('error');
+        hasError = true;
+      }
+      if (!weight || weight <= 0) {
+        document.getElementById('weight').classList.add('error');
+        hasError = true;
+      }
+      if (!height || height <= 0) {
+        document.getElementById('height').classList.add('error');
+        hasError = true;
+      }
+      if (!gender) {
+        document.getElementById('gender').classList.add('error');
+        hasError = true;
+      }
+      if (!activity) {
+        document.getElementById('activity').classList.add('error');
+        hasError = true;
+      }
+
+      if (hasError) {
+        result.textContent = 'Please fill in all fields correctly.';
+        result.classList.add('error');
+        return;
+      }
+
+      // Mifflin-St Jeor Equation
+      let bmr = gender === 'male'
+        ? 10 * weight + 6.25 * height - 5 * age + 5
+        : 10 * weight + 6.25 * height - 5 * age - 161;
+
+      let tdee = bmr * activity;
+
+      result.textContent = `Your daily calorie need is approx: ${Math.round(tdee)} Calories/day.`;
+    }
+  </script>
+
+</body>
+</html>

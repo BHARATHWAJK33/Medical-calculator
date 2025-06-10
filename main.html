@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Medi(Cal)</title>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Left sidebar -->
+        <div class="left-bar">
+            <div class="left-nav">
+                <ul>
+                    <li>
+                        <button onclick="location.href='main.html'" class="fancy-btn">Home</button>
+                    </li>
+                    <li>
+                        <button onclick="loadPage('calculator.html')" class="fancy-btn">Calculator</button>
+                    </li>
+                    <li>
+                        <!-- <button onclick="loadPage('theme.html')"  class="fancy-btn">Theme</button> -->
+                        <button id="themeToggle"class="fancy-btn" >
+                           Theme <span id="themeIcon">🌙</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="loadPage('about.html')" class="fancy-btn">About</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="left-bottom">
+                <button class="profile-btn">Profile</button>
+            </div>
+        </div>
+        <!-- body -->
+        <div class="item" id="content">
+            <iframe src="home.html" style="border: none; border-radius: 10px;" width="85%" height="500px"></iframe>
+        </div>
+        <!-- Left sidebar -->
+        <div class="right-bar">
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="script.js"></script>

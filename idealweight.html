@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ideal Weight Calculator with Comparison</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffe0b2, #c8e6c9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 420px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input:focus, select:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+
+    input.error, select.error {
+      border-color: red;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4caf50;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #388e3c;
+    }
+
+    .result {
+      margin-top: 16px;
+      font-size: 1em;
+      font-weight: 500;
+      color: #333;
+      text-align: left;
+    }
+
+    .result.error {
+      color: red;
+    }
+
+    .diff {
+      font-size: 0.9em;
+      color: #666;
+    }
+    .diff.positive { color: red; }
+    .diff.negative { color: green; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Ideal Weight Calculator</h2>
+    <input type="number" id="height" placeholder="Height in cm">
+    <input type="number" id="weight" placeholder="Your Current Weight (kg)">
+    <select id="gender">
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <button onclick="calculateIdealWeight()">Calculate</button>
+    <div class="result" id="idealWeightResult"></div>
+  </div>
+
+  <script>
+    function calculateIdealWeight() {
+      const height = parseFloat(document.getElementById('height').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const gender = document.getElementById('gender').value;
+      const result = document.getElementById('idealWeightResult');
+
+      // Reset
+      result.innerHTML = '';
+      result.classList.remove('error');
+      document.getElementById('height').classList.remove('error');
+      document.getElementById('weight').classList.remove('error');
+      document.getElementById('gender').classList.remove('error');
+
+      let hasError = false;
+      if (!height || height <= 0) {
+        document.getElementById('height').classList.add('error');
+        hasError = true;
+      }
+      if (!weight || weight <= 0) {
+        document.getElementById('weight').classList.add('error');
+        hasError = true;
+      }
+      if (!gender) {
+        document.getElementById('gender').classList.add('error');
+        hasError = true;
+      }
+
+      if (hasError) {
+        result.textContent = 'Please fill in all valid fields.';
+        result.classList.add('error');
+        return;
+      }
+
+      const heightInInches = height / 2.54;
+      const extraInches = Math.max(0, heightInInches - 60);
+
+      const formulas = {
+        Devine: gender === 'male' ? 50 + 2.3 * extraInches : 45.5 + 2.3 * extraInches,
+        Robinson: gender === 'male' ? 52 + 1.9 * extraInches : 49 + 1.7 * extraInches,
+        Miller: gender === 'male' ? 56.2 + 1.41 * extraInches : 53.1 + 1.36 * extraInches,
+        Hamwi: gender === 'male' ? 48 + 2.7 * extraInches : 45.5 + 2.2 * extraInches
+      };
+
+      const formatDiff = (ideal) => {
+        const diff = (weight - ideal).toFixed(1);
+        const className = diff > 0 ? 'positive' : 'negative';
+        const verb = diff > 0 ? 'above' : 'below';
+        return `<span class="diff ${className}">(${Math.abs(diff)} kg ${verb} ideal)</span>`;
+      };
+
+      result.innerHTML = `
+        <div><strong>Estimated Ideal Weight (kg):</strong></div>
+        <ul style="text-align: left; margin-top: 8px;">
+          <li>Devine: ${formulas.Devine.toFixed(1)} kg ${formatDiff(formulas.Devine)}</li>
+          <li>Robinson: ${formulas.Robinson.toFixed(1)} kg ${formatDiff(formulas.Robinson)}</li>
+          <li>Miller: ${formulas.Miller.toFixed(1)} kg ${formatDiff(formulas.Miller)}</li>
+          <li>Hamwi: ${formulas.Hamwi.toFixed(1)} kg ${formatDiff(formulas.Hamwi)}</li>
+        </ul>
+      `;
+    }
+  </script>
+
+</body>
+</html>

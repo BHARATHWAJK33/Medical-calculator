@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pregnancy Due Date Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fce4ec, #e1f5fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #42a5f5;
+      outline: none;
+    }
+
+    input.error {
+      border-color: red;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #42a5f5;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #1e88e5;
+    }
+
+    .result {
+      margin-top: 16px;
+      font-size: 1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Pregnancy Due Date Calculator</h2>
+    <input type="date" id="lmpDate" placeholder="Last Menstrual Period (LMP)">
+    <button onclick="calculateDueDate()">Estimate Due Date</button>
+    <div class="result" id="dueDateResult"></div>
+  </div>
+
+  <script>
+    function calculateDueDate() {
+      const lmpInput = document.getElementById('lmpDate');
+      const lmpDate = new Date(lmpInput.value);
+      const result = document.getElementById('dueDateResult');
+
+      // Reset
+      result.innerHTML = '';
+      result.classList.remove('error');
+      lmpInput.classList.remove('error');
+
+      if (!lmpInput.value || isNaN(lmpDate.getTime())) {
+        lmpInput.classList.add('error');
+        result.textContent = 'Please select a valid date.';
+        result.classList.add('error');
+        return;
+      }
+
+      // Naegele’s Rule: LMP + 280 days
+      const dueDate = new Date(lmpDate.getTime() + 280 * 24 * 60 * 60 * 1000);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+      result.innerHTML = `Estimated Due Date: <br><strong>${dueDate.toLocaleDateString(undefined, options)}</strong>`;
+    }
+  </script>
+
+</body>
+</html>

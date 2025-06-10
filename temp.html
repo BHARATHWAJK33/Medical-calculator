@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hover Info Box</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .info-container {
+      position: relative;
+      width: 200px;
+      height: 150px;
+      background: linear-gradient(135deg, #42a5f5, #478ed1);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .info-container:hover {
+      transform: scale(1.05);
+    }
+
+    .tooltip {
+      position: absolute;
+      bottom: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      color: #333;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      font-size: 14px;
+      width: 220px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 10;
+    }
+
+    .info-container:hover .tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+
+    .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 8px;
+      border-style: solid;
+      border-color: white transparent transparent transparent;
+    }
+
+    .info-label {
+      color: white;
+      text-align: center;
+      margin-top: 50px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="info-container">
+    <div class="info-label">Calories</div>
+    <div class="tooltip">
+      This card shows your weekly calorie progress. Hover to see more detailed info or click for insights.
+    </div>
+  </div>
+
+</body>
+</html>
+
+
+<script>
+  // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyApxbGgkF1-GWcpBOibuzz1_-7HugkhnRI",
+  authDomain: "medicalcalculator-8c615.firebaseapp.com",
+  projectId: "medicalcalculator-8c615",
+  storageBucket: "medicalcalculator-8c615.firebasestorage.app",
+  messagingSenderId: "920311114210",
+  appId: "1:920311114210:web:108abdff08446e07bd31bb",
+  measurementId: "G-Q16Z6B92VD"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+</script>

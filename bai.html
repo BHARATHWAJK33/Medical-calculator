@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BAI Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #d2f3ff, #fbe9e7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .bai-container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    .bai-container h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .bai-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border 0.3s;
+    }
+
+    .bai-container input:focus {
+      border-color: #4f46e5;
+      outline: none;
+    }
+
+    .bai-container input.error {
+      border-color: red;
+    }
+
+    .bai-container button {
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .bai-container button:hover {
+      background: #4338ca;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bai-container">
+    <h2>BAI Calculator</h2>
+    <input type="number" id="hip" placeholder="Hip Circumference (cm)" />
+    <input type="number" id="height" placeholder="Height (cm)" />
+    <button onclick="calculateBAI()">Calculate BAI</button>
+    <div class="result" id="baiResult"></div>
+  </div>
+
+  <script>
+    function calculateBAI() {
+      const hipEl = document.getElementById('hip');
+      const heightEl = document.getElementById('height');
+      const resultEl = document.getElementById('baiResult');
+
+      const hip = parseFloat(hipEl.value);
+      const height = parseFloat(heightEl.value);
+
+      // Reset previous styles
+      hipEl.classList.remove('error');
+      heightEl.classList.remove('error');
+      resultEl.classList.remove('error');
+      resultEl.textContent = '';
+
+      if (!hip || hip <= 0) {
+        hipEl.classList.add('error');
+        resultEl.textContent = 'Please enter a valid hip circumference.';
+        resultEl.classList.add('error');
+        return;
+      }
+
+      if (!height || height <= 0) {
+        heightEl.classList.add('error');
+        resultEl.textContent = 'Please enter a valid height.';
+        resultEl.classList.add('error');
+        return;
+      }
+
+      const heightInMeters = height / 100;
+      const bai = ((hip / Math.pow(heightInMeters, 1.5)) - 18).toFixed(1);
+
+      resultEl.textContent = `Your BAI is ${bai}% body fat`;
+    }
+  </script>
+
+</body>
+</html>

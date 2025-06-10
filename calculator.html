@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <link rel="stylesheet" href="temp.css"> -->
+</head>
+
+<body>
+    <div class="containerr">
+        <div class="box" onclick="openPopup('bmi.html')">
+            <img src="BMI.png" alt="">
+            <h1>BMI</h1>
+        </div>
+        <div class="box" onclick="openPopup('bmr.html')">
+            <img src="BMR.png" alt="">
+            <h1>BMR</h1>
+        </div>
+        <div class="box" onclick="openPopup('bai.html')">
+            <img src="BAI.png" alt="">
+            <h1>BAI</h1>
+        </div>
+        <div class="box" onclick="openPopup('bodyfat.html')">
+            <img src="BodyFat.png" alt="">
+            <h1>BODY FAT</h1>
+        </div>
+        <div class="box" onclick="openPopup('waterintake.html')">
+            <img src="WaterIntake.png" alt="">
+            <h1>Water Intake</h1>
+        </div>
+        <div class="box" onclick="openPopup('calories.html')">
+            <img src="Calories.png" alt="">
+            <h1>CALORIES</h1>
+        </div>
+          <div class="box" onclick="openPopup('heartrate.html')">
+            <img src="HeartRate.png" alt="">
+            <h1>Heart Rate</h1>
+        </div>
+        <div class="box" onclick="openPopup('idealweight.html')">
+            <img src="IdealWeight.png" alt="">
+            <h1>Ideal Weight</h1>
+        </div>
+        <div class="box" onclick="openPopup('macronutrient.html')">
+            <img src="Macronutrient.png" alt="">
+            <h1>Macronutrient</h1>
+        </div>
+        <div class="box" onclick="openPopup('pregnancydue.html')">
+            <img src="PregnancyDueDate.png" alt="">
+            <h1>Pregnancy Due Date</h1>
+        </div>
+        <div class="box" onclick="openPopup('tdee.html')">
+            <img src="TDEE.png" alt="">
+            <h1>TDEE</h1>
+        </div>
+        <div class="box" onclick="openPopup('sleepcalculator.html')">
+            <img src="SleepCalculator.png" alt="">
+            <h1>Sleep Calculator</h1>
+        </div>
+
+    </div>
+
+<!-- <button >Open Popup</button> -->
+
+  <!-- Modal Container -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closePopup()">Close</button>
+      <iframe id="popupFrame"></iframe>
+    </div>
+  </div>
+
+</body>
+
+</html>
+<style>
+    
+  .containerr {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2%;
+        justify-content: center;
+    }
+
+    .box {
+        height: 100%;
+        width: 250px;
+         border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: lightblue;
+        /* optional */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: bold;
+        margin-bottom: 2%;
+        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    }
+    .box img{
+        width: 100%;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .box h1{
+        margin: 0;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+
+    /* Modal backdrop */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    /* Modal box */
+    .modal-box {
+      width: 600px;
+      height: 450px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Close button */
+    .modal-box button.close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+</style>
+
+
+  <script>
+    function openPopup(file) {
+      document.getElementById('popupFrame').src = file;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function closePopup() {
+      document.getElementById('modal').classList.remove('active');
+      document.getElementById('popupFrame').src = ''; // clear iframe
+    }
+  </script>

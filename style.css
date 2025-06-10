@@ -1,0 +1,130 @@
+
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+}
+
+body {
+      margin: 0;
+
+  background-color: var(--bg);
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+body.dark-mode {
+  --bg: #121212;
+  --text: #f0f0f0;
+}
+
+#themeToggle {
+  /* position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 10px; */
+  cursor: pointer;
+}
+
+
+body::-webkit-scrollbar {
+    display: none;
+}
+iframe{
+    margin-left: 8%;
+}
+.container {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.item:nth-child(2) {
+    flex-grow: 1;
+}
+
+.left-nav li {
+    list-style: none;
+    padding: 8% 0;
+
+}
+
+.left-nav button {
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    /* background: rgba(0, 0, 0,0.8); */
+    color: #fff;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+.left-nav ul {
+    padding: 0;
+    justify-items: center;
+}
+
+.left-bar {
+    /* background-color: #c0e6f4; */
+    background: linear-gradient(to bottom, #f6d9eb, #c0e6f4);
+    height: 80vh;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 2%;
+    margin-left: 1%;
+    border-radius: 10px;
+}
+
+.left-bottom {
+    justify-items: center;
+    text-align: center;
+    top: 0;
+    margin-bottom: 5%;
+}
+
+.item {
+    width: 80%;
+    margin-left: 15%;
+    margin-top: 2%;
+}
+
+.fancy-btn {
+    padding: 12px 24px;
+    /* background-color: #4f46e5;  */
+    background-color: rgba(67, 56, 202, 0.7);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.fancy-btn:hover {
+    background-color: #4338ca;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.fancy-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profile-btn {
+    border: none;
+    background-color: #f3e5ee;
+    padding: 7px 30px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+.profile-btn:hover{
+    color: rgb(67, 56, 202);
+    background-color: white;
+}

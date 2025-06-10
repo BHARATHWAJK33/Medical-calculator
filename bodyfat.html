@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Body Fat Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 35px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      width: 380px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: #4f46e5;
+      outline: none;
+    }
+
+    input.error, select.error {
+      border-color: red;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #3730a3;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Body Fat Calculator</h2>
+    <select id="gender">
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <input type="number" id="height" placeholder="Height (cm)" />
+    <input type="number" id="neck" placeholder="Neck (cm)" />
+    <input type="number" id="waist" placeholder="Waist (cm)" />
+    <input type="number" id="hip" placeholder="Hip (cm - only for women)" />
+    <button onclick="calculateBodyFat()">Calculate Body Fat %</button>
+    <div class="result" id="bodyFatResult"></div>
+  </div>
+
+  <script>
+    function calculateBodyFat() {
+      const genderEl = document.getElementById('gender');
+      const heightEl = document.getElementById('height');
+      const neckEl = document.getElementById('neck');
+      const waistEl = document.getElementById('waist');
+      const hipEl = document.getElementById('hip');
+      const resultEl = document.getElementById('bodyFatResult');
+
+      // Reset all error states
+      [genderEl, heightEl, neckEl, waistEl, hipEl].forEach(el => el.classList.remove('error'));
+      resultEl.classList.remove('error');
+      resultEl.textContent = '';
+
+      const gender = genderEl.value;
+      const height = parseFloat(heightEl.value);
+      const neck = parseFloat(neckEl.value);
+      const waist = parseFloat(waistEl.value);
+      const hip = parseFloat(hipEl.value);
+
+      let hasError = false;
+
+      if (!gender) { genderEl.classList.add('error'); hasError = true; }
+      if (!height || height <= 0) { heightEl.classList.add('error'); hasError = true; }
+      if (!neck || neck <= 0) { neckEl.classList.add('error'); hasError = true; }
+      if (!waist || waist <= 0) { waistEl.classList.add('error'); hasError = true; }
+      if (gender === 'female' && (!hip || hip <= 0)) { hipEl.classList.add('error'); hasError = true; }
+
+      if (hasError) {
+        resultEl.textContent = "Please fill all fields correctly.";
+        resultEl.classList.add("error");
+        return;
+      }
+
+      const log10 = x => Math.log10(x);
+      let bodyFat;
+
+      if (gender === 'male') {
+        bodyFat = 86.010 * log10(waist - neck) - 70.041 * log10(height) + 36.76;
+      } else {
+        bodyFat = 163.205 * log10(waist + hip - neck) - 97.684 * log10(height) - 78.387;
+      }
+
+      resultEl.textContent = `Your Body Fat is ${bodyFat.toFixed(2)}%`;
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medical Calculator - Welcome</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 40px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #4b4b4b;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      background: #26a69a;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #2bbbad;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .features {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .feature-box {
+      background: #f0f4c3;
+      padding: 15px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: #333;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      min-width: 120px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Welcome to <span style="color:#00796b;">Medical Calculator</span></h1>
+    <p>
+      Your one-stop destination for health, fitness, and medical tools.<br>
+      Track, measure, and improve your well-being with a suite of accurate, interactive calculators — all in one place.
+    </p>
+
+    <div class="features">
+      <div class="feature-box">BMI & BMR</div>
+      <div class="feature-box">Body Fat %</div>
+      <div class="feature-box">TDEE & Calories</div>
+      <div class="feature-box">Pregnancy & Due Date</div>
+      <div class="feature-box">Sleep & Hydration</div>
+    </div>
+
+    <br>
+    <!-- <button class="btn" onclick="window.location.href='index.html'">Get Started</button> -->
+  </div>
+
+</body>
+</html>

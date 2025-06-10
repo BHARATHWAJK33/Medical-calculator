@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Water Intake Tracker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 35px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 380px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #29b6f6;
+      outline: none;
+    }
+
+    input.error {
+      border-color: red;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #29b6f6;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #0288d1;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-size: 1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+
+    .progress-container {
+      margin-top: 25px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 24px;
+      width: 100%;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #4dd0e1;
+      transition: width 0.4s ease-in-out;
+      text-align: center;
+      color: #fff;
+      line-height: 24px;
+      font-size: 0.9em;
+    }
+
+    .glass-btn {
+      margin-top: 15px;
+      background: #66bb6a;
+    }
+
+    .glass-btn:hover {
+      background: #388e3c;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Water Intake Calculator</h2>
+    <input type="number" id="weight" placeholder="Your weight (kg)" />
+    <input type="number" id="exercise" placeholder="Exercise duration (minutes)" />
+    <button onclick="calculateWater()">Calculate</button>
+    <div class="result" id="waterResult"></div>
+
+    <div class="progress-container" style="display:none;" id="progressContainer">
+      <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+    <button class="glass-btn" id="addGlassBtn" style="display:none;" onclick="addGlass()">+ Add 250ml</button>
+  </div>
+
+  <script>
+    let totalGoal = 0;
+    let currentIntake = 0;
+
+    function calculateWater() {
+      const weightEl = document.getElementById('weight');
+      const exerciseEl = document.getElementById('exercise');
+      const resultEl = document.getElementById('waterResult');
+      const progressBar = document.getElementById('progressBar');
+      const progressContainer = document.getElementById('progressContainer');
+      const addGlassBtn = document.getElementById('addGlassBtn');
+
+      weightEl.classList.remove('error');
+      exerciseEl.classList.remove('error');
+      resultEl.classList.remove('error');
+      resultEl.textContent = '';
+      progressBar.style.width = '0%';
+      progressBar.textContent = '0%';
+      progressContainer.style.display = 'none';
+      addGlassBtn.style.display = 'none';
+      currentIntake = 0;
+
+      const weight = parseFloat(weightEl.value);
+      const exercise = parseFloat(exerciseEl.value || 0);
+
+      let hasError = false;
+
+      if (!weight || weight <= 0) {
+        weightEl.classList.add('error');
+        hasError = true;
+      }
+
+      if (exercise < 0) {
+        exerciseEl.classList.add('error');
+        hasError = true;
+      }
+
+      if (hasError) {
+        resultEl.textContent = 'Please enter valid values.';
+        resultEl.classList.add('error');
+        return;
+      }
+
+      totalGoal = (weight * 35) + (Math.floor(exercise / 30) * 350);
+      resultEl.textContent = `Your daily goal: ${(totalGoal / 1000).toFixed(2)} L (${totalGoal} ml)`;
+      progressContainer.style.display = 'block';
+      addGlassBtn.style.display = 'block';
+    }
+
+    function addGlass() {
+      if (totalGoal === 0) return;
+
+      const glassAmount = 250;
+      currentIntake += glassAmount;
+      if (currentIntake > totalGoal) currentIntake = totalGoal;
+
+      const percentage = Math.min((currentIntake / totalGoal) * 100, 100).toFixed(1);
+      const progressBar = document.getElementById('progressBar');
+      progressBar.style.width = percentage + '%';
+      progressBar.textContent = `${Math.round(currentIntake)} / ${totalGoal} ml`;
+
+      if (currentIntake >= totalGoal) {
+        alert("🎉 You've reached your water goal for today!");
+      }
+    }
+  </script>
+
+</body>
+</html>

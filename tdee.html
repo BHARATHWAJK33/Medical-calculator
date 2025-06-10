@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TDEE Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #fce4ec);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 420px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+    }
+
+    input:focus, select:focus {
+      border-color: #2196f3;
+      outline: none;
+    }
+
+    input.error, select.error {
+      border-color: red;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2196f3;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #1976d2;
+    }
+
+    .result {
+      margin-top: 16px;
+      font-size: 1em;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>TDEE Calculator</h2>
+    <input type="number" id="age" placeholder="Age (years)">
+    <input type="number" id="weight" placeholder="Weight (kg)">
+    <input type="number" id="height" placeholder="Height (cm)">
+    <select id="gender">
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <select id="activity">
+      <option value="">Activity Level</option>
+      <option value="1.2">Sedentary (little or no exercise)</option>
+      <option value="1.375">Lightly active (light exercise)</option>
+      <option value="1.55">Moderately active (moderate exercise)</option>
+      <option value="1.725">Very active (hard exercise)</option>
+      <option value="1.9">Super active (twice/day training)</option>
+    </select>
+    <button onclick="calculateTDEE()">Calculate TDEE</button>
+    <div class="result" id="tdeeResult"></div>
+  </div>
+
+  <script>
+    function calculateTDEE() {
+      const age = parseInt(document.getElementById('age').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+      const gender = document.getElementById('gender').value;
+      const activity = parseFloat(document.getElementById('activity').value);
+      const result = document.getElementById('tdeeResult');
+
+      // Reset styles
+      result.innerHTML = '';
+      result.classList.remove('error');
+      ['age', 'weight', 'height', 'gender', 'activity'].forEach(id =>
+        document.getElementById(id).classList.remove('error')
+      );
+
+      if (!age || !weight || !height || !gender || isNaN(activity)) {
+        result.textContent = 'Please fill in all fields correctly.';
+        result.classList.add('error');
+        ['age', 'weight', 'height', 'gender', 'activity'].forEach(id => {
+          const el = document.getElementById(id);
+          if (!el.value || el.value === "") el.classList.add('error');
+        });
+        return;
+      }
+
+      // BMR Calculation (Mifflin-St Jeor)
+      let bmr;
+      if (gender === 'male') {
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+      } else {
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+      }
+
+      const tdee = bmr * activity;
+
+      result.innerHTML = `
+        Estimated TDEE: <br><strong>${Math.round(tdee)} kcal/day</strong>
+      `;
+    }
+  </script>
+
+</body>
+</html>

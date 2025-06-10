@@ -29,9 +29,7 @@ body.dark-mode {
 body::-webkit-scrollbar {
     display: none;
 }
-iframe{
-    margin-left: 8%;
-}
+
 .container {
     display: flex;
     gap: 20px;
